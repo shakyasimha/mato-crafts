@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+import pymongo
 from dotenv import load_dotenv
 import os 
 
@@ -13,6 +13,6 @@ database      = os.getenv('DATABASE_NAME')
 
 ## Connection url for mongodb
 url = f"mongodb+srv://{username}:{password}@{atlas_cluster}/{database}?retryWrites=true&w=majority"
-client = MongoClient(url)
+client = pymongo.MongoClient(url)
 
 db = client['mato_crafts']
