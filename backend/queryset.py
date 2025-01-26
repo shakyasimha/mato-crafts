@@ -6,13 +6,10 @@ import os
 load_dotenv()
 
 ## Accessing environment variables
-username = os.getenv('DB_USERNAME')
-password = os.getenv('DB_PASSWORD')
-atlas_cluster = os.getenv('DB_ATLAS_CLUSTER')
 db_name = os.getenv('DATABASE_NAME')
+url = os.getenv('MONGODB_URL')
 
 ## Initializing mongodb client
-url = f"mongodb+srv://{username}:{password}@{atlas_cluster}/{db_name}?retryWrites=true&w=majority"
 client = MongoClient(url)
 
 ## Test document for testing if the api works; import this and test QuerySet
