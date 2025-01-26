@@ -39,7 +39,7 @@ class QuerySet:
     def delete_one(self, query):
         """Delete a single document matching the query"""
         result = self.collection.delete_one(query)
-        return result.deleted_count 
+        return result.deleted_count
     
     def update_one(self, query, update):
         """Update a single document."""
