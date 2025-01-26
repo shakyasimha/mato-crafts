@@ -1,6 +1,5 @@
 # from django.db import models
-from db_connection import db 
+from backend.queryset import db 
 
 # Create your models here.
-product_collection = db['products']
 

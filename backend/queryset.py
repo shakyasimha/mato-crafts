@@ -6,14 +6,29 @@ import os
 load_dotenv()
 
 ## Accessing environment variables
-username      = os.getenv('DB_USERNAME')
-password      = os.getenv('DB_PASSWORD')
+username = os.getenv('DB_USERNAME')
+password = os.getenv('DB_PASSWORD')
 atlas_cluster = os.getenv('DB_ATLAS_CLUSTER')
-database      = os.getenv('DATABASE_NAME')
+db_name = os.getenv('DATABASE_NAME')
 
 ## Initializing mongodb client
-url = f"mongodb+srv://{username}:{password}@{atlas_cluster}/{database}?retryWrites=true&w=majority"
-client      = MongoClient(url)
+url = f"mongodb+srv://{username}:{password}@{atlas_cluster}/{db_name}?retryWrites=true&w=majority"
+client = MongoClient(url)
+
+## Test document for testing if the api works; import this and test QuerySet
+document = {
+  "name": "John Doe",
+  "age": 30,
+  "email": "john.doe@example.com",
+  "address": {
+    "street": "123 Main St",
+    "city": "New York",
+    "state": "NY",
+    "zip": "10001"
+  },
+  "hobbies": ["reading", "traveling", "coding"],
+  "is_active": True
+}
 
 ## Class definition for mongodb queries
 class QuerySet:
@@ -22,7 +37,7 @@ class QuerySet:
         """Ctor"""
         if not hasattr(self.__class__, "client"):
             self.__class__.client = MongoClient(url) 
-        self.db = self.client['mato_crafts']
+        self.db = self.client[db_name]
         self.collection = self.db['test']
         
     def insert_one(self, post):
