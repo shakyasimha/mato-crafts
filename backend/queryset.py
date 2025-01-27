@@ -6,26 +6,28 @@ import os
 load_dotenv()
 
 ## Accessing environment variables
-db_name = os.getenv('DATABASE_NAME')
-url = os.getenv('MONGODB_URL')
-
-## Initializing mongodb client
-client = MongoClient(url)
+db_name = os.getenv('TEST_DB')
+url = os.getenv('MONGODB_LOCAL')
 
 ## Test document for testing if the api works; import this and test QuerySet
 document = {
-  "name": "John Doe",
-  "age": 30,
-  "email": "john.doe@example.com",
-  "address": {
-    "street": "123 Main St",
-    "city": "New York",
-    "state": "NY",
-    "zip": "10001"
-  },
-  "hobbies": ["reading", "traveling", "coding"],
-  "is_active": True
+  "name": "Earrings",
+  "description": "Kaan ma jhundaune kura",
+  "qty": 42,
+  "price": 100.0,
+  "size": "Large",
+  "dimensions": "12x34x56 cm",
+  "thumbnail": "https://picsum.photos/200/300",
+  "images": [
+    "https://picsum.photos/200/300",
+    "https://picsum.photos/200/300",
+    "https://picsum.photos/200/300"
+  ]
 }
+
+
+## Initializing mongodb client
+client = MongoClient(url)
 
 ## Class definition for mongodb queries
 class QuerySet:
@@ -35,7 +37,7 @@ class QuerySet:
         if not hasattr(self.__class__, "client"):
             self.__class__.client = MongoClient(url) 
         self.db = self.client[db_name]
-        self.collection = self.db['test']
+        self.collection = self.db['products']
         
     def insert_one(self, post):
         """Inserting single document into the collection"""
@@ -44,7 +46,7 @@ class QuerySet:
     
     def find(self, query=None):
         """Find documents in the collection"""
-        if query is None: 
+        if query is None:
             query = {}
         return list(self.collection.find(query))
     
