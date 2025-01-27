@@ -50,6 +50,11 @@ class QuerySet:
             query = {}
         return list(self.collection.find(query))
     
+    def find_all(self):
+        """Retrieve all documents in the collection"""
+        result = self.collection.find({})
+        return list(result)
+        
     def delete_one(self, query):
         """Delete a single document matching the query"""
         result = self.collection.delete_one(query)
