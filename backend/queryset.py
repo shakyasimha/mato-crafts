@@ -60,6 +60,11 @@ class QuerySet:
         result = self.collection.delete_one(query)
         return result.deleted_count
     
+    def delete_all(self):
+        """Delete all entries"""
+        result = self.collection.delete_many({})
+        return result.deleted_count 
+    
     def update_one(self, query, update):
         """Update a single document."""
         result = self.collection.update_one(query, {"$set": update})
