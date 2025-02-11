@@ -1,8 +1,8 @@
 # from django.db import models
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from typing import List, Dict, Any
 from bson import ObjectId
-from django.db import models 
+from . import queryset 
 
 # Create your models here.
 @dataclass
@@ -49,6 +49,27 @@ class Product:
             categories=data.get("categories", []),
             _review_id=data.get("_review_id", ObjectId()),
         )    
+    
+    def to_dict(self):
+        """Convert instance to dictionary for MongoDB story"""
+        data = asdict(self)
+        
+        ## Convert ObjectId fields to strings for MongoDB compatibility
+        data["_id"] = str(self._id)
+        data["_review_id"] = str(self._review_id)
+        return data 
+    
+    def save(self):
+        """Save instance to MongoDB"""
+        try: 
+            db = queryset.QuerySet() 
+            result = db.insert_one(self.to_dict())
+            return result 
+        except Exception as e:
+            print(str(e))
+            return e 
+    
+    
     
 @dataclass 
 class Customer: 
