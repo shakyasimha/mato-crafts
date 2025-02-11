@@ -42,8 +42,8 @@ class MongoSerializer:
                 if key == "_id" and isinstance(value, str):
                     try: 
                         deserialized_doc[key] = ObjectId(value) # Convert string to ObjectId
-                    except: 
-                        deserialized_doc[key] = value 
+                    except:
+                        deserialized_doc[key] = value
                 elif isinstance(value, str) and MongoSerializer.is_iso_datetime(value):
                     deserialized_doc[key] = datetime.fromisoformat(value)
                 elif isinstance(value, list):
