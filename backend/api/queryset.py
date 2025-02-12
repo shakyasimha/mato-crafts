@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from pymongo.errors import PyMongoError
 from dotenv import load_dotenv
 import os 
 
@@ -25,20 +26,26 @@ document = {
   ]
 }
 
-
-## Initializing mongodb client
-client = MongoClient(url)
-
 ## Class definition for mongodb queries
 class QuerySet:
     """Queryset definition for running operations on mongodb client""" 
-    def __init__(self):
+    client = None 
+    
+    def __init__(self, collection_name=None):
         """Ctor"""
-        if not hasattr(self.__class__, "client"):
-            self.__class__.client = MongoClient(url) 
-        self.db = self.client[db_name]
-        self.collection = self.db['products']
+        if not collection_name: 
+            raise ValueError("`collection_name` cannot be empty.")
         
+        try: 
+            if not QuerySet.client:
+                QuerySet.client = MongoClient(url)  
+
+            self.db = QuerySet.client[db_name]
+            self.collection = self.db[collection_name]
+        except PyMongoError as e: 
+            print(f"Error connecting to MongoDB: {e}")
+            raise 
+            
     def insert_one(self, post):
         """Inserting single document into the collection"""
         result = self.collection.insert_one(post)

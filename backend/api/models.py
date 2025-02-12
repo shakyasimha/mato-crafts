@@ -5,8 +5,37 @@ from bson import ObjectId
 from . import queryset 
 
 # Create your models here.
+class BaseModel:
+    """Base class model to provide shared models"""
+    
+    @classmethod 
+    def from_dict(cls, data: Dict[str, Any]): 
+        """Dynamically create an instance of derived class from provided dictionary"""
+        field_names = {f.name for f in cls.__dataclass_fields__.values()}
+        filtered_data = {k:v for k, v in data.items() if k in field_names}
+        
+        ## Handling ObjectId fields dynamically 
+        for field_name in field_names: 
+            field_type = cls.__dataclass_fields__[field_name].type 
+            
+            if field_type == ObjectId and isinstance(filtered_data.get(field_name), str):
+                filtered_data[field_name] = ObjectId(filtered_data[field_name])
+                
+        return cls(**filtered_data)
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert instance to dictionary for MongoDB story"""
+        data = asdict(self)
+        
+        for key, value in data.items():
+            if isinstance(value, ObjectId):
+                data[key] = str(value)
+
+        return data  
+    
+    
 @dataclass
-class Product:
+class Product(BaseModel):
     """Class for products document"""
     _id: ObjectId = field(default_factory=ObjectId)
     name: str = None
@@ -29,35 +58,6 @@ class Product:
             self._id = ObjectId(self._id)
         if not isinstance(self._review_id, ObjectId):
             self._review_id = ObjectId(self._review_id)
-        
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "Product":
-        """Create a Product instance from a dictionary (e.g., request.data)"""
-        return cls(
-            _id=data.get("_id", ObjectId()),
-            name=data.get("name"),
-            images=data.get("images", []),
-            price=data.get("price", 0),
-            stock_remaining=data.get("stock_remaining", 0),
-            recommender_metadata=data.get("recommender_metadata", {}),
-            size=data.get("size", []),
-            description=data.get("description"),
-            materials=data.get("materials", []),
-            weight=data.get("weight", 0),
-            dimension=data.get("dimension"),
-            product_type=data.get("product_type", []),
-            categories=data.get("categories", []),
-            _review_id=data.get("_review_id", ObjectId()),
-        )    
-    
-    def to_dict(self):
-        """Convert instance to dictionary for MongoDB story"""
-        data = asdict(self)
-        
-        ## Convert ObjectId fields to strings for MongoDB compatibility
-        data["_id"] = str(self._id)
-        data["_review_id"] = str(self._review_id)
-        return data 
     
     def save(self):
         """Save instance to MongoDB"""
@@ -67,12 +67,12 @@ class Product:
             return result 
         except Exception as e:
             print(str(e))
-            return e 
+            return {"error": str(e)}
     
     
     
 @dataclass 
-class Customer: 
+class Customer(BaseModel): 
     """Class for Customers"""
     _id: ObjectId = field(default_factory=ObjectId)
     phone: str
@@ -87,9 +87,16 @@ class Customer:
             self._id = ObjectId(self._id) 
         if self.phone is None: 
             raise ValueError("Phone number cannot be null")
-        
     
-        
+    def save(self):
+        """Save instance to MongoDB"""
+        try: 
+            db = queryset.QuerySet() 
+            result = db.insert_one(self.to_dict())
+            return result 
+        except Exception as e:
+            print(str(e))
+            return {"error": str(e)}
 @dataclass
 class Employee: 
     """Class for employees"""

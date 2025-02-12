@@ -4,7 +4,7 @@ from datetime import datetime
 class MongoSerializer:
     """Custom serializer for MongoDB documents.""" 
     @staticmethod 
-    def serializer(document):
+    def serialize(document):
         """Convert a MongoDB document to JSON-compatible dict"""
         if not isinstance(document, dict):
             return document     ## returns as-is if not dict
@@ -20,10 +20,10 @@ class MongoSerializer:
                     serialized_doc[key] = value.isoformat() 
                 elif isinstance(value, list):
                     # Serialize list for json
-                    serialized_doc[key] = [MongoSerializer.serializer(item)  for item in value]
+                    serialized_doc[key] = [MongoSerializer.serialize(item)  for item in value]
                 elif isinstance(value, dict):
                     # Serialize dictionary
-                    serialized_doc[key] = MongoSerializer.serializer(dict)
+                    serialized_doc[key] = MongoSerializer.serialize(dict)
                 else:
                     # Pass the value 
                     serialized_doc[key] = value
@@ -31,7 +31,7 @@ class MongoSerializer:
             return serialized_doc
         
     @staticmethod 
-    def deserializer(json_data):
+    def deserialize(json_data):
         """Converting a JSON data to BSON format for MongoDB"""
         if not isinstance(json_data, dict):
             return json_data 
@@ -47,9 +47,9 @@ class MongoSerializer:
                 elif isinstance(value, str) and MongoSerializer.is_iso_datetime(value):
                     deserialized_doc[key] = datetime.fromisoformat(value)
                 elif isinstance(value, list):
-                    deserialized_doc[key] = [MongoSerializer.deserializer(item) for item in value]
+                    deserialized_doc[key] = [MongoSerializer.deserialize(item) for item in value]
                 elif isinstance(value, dict):
-                    deserialized_doc[key] = MongoSerializer.deserializer(value)
+                    deserialized_doc[key] = MongoSerializer.deserialize(value)
                 else: 
                     deserialized_doc[key] = value 
                     
