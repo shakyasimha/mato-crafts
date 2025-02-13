@@ -7,6 +7,15 @@ from pymongo.errors import PyMongoError
 
 from .queryset import QuerySet 
 from .serializer import MongoSerializer
+from .models import (
+    Product,
+    ProductListing, 
+    Customer, 
+    Employee, 
+    Sales, 
+    Cart, 
+    Review
+)
 
 # Create your views here.
 @api_view(['GET', 'POST'])
@@ -36,13 +45,10 @@ def product_view(request):
         
         
     if request == 'POST':
-        data = request.data 
-        
-        try: 
-            if "_id" not in data: 
-                data["_id"] = ObjectId() 
-            
-            query.insert_one(data)
+        try:
+            product = Product() 
+            product.from_dict(request.data)
+            product.save()       
         except PyMongoError as e:
             print(str(e))
             return Response({"Error": str(e)})

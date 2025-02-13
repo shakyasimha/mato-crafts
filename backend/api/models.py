@@ -59,6 +59,15 @@ class Product(BaseModel):
         if not isinstance(self._review_id, ObjectId):
             self._review_id = ObjectId(self._review_id)
     
+    
+    ## Overriding the default constructor 
+    def __init__(self, data: Dict[str, Any] = None):
+        if data: 
+            instance = self.from_dict(data)
+            self.__dict__.update(instance.__dict__)
+        else: 
+            super().__init__()
+            
     def save(self):
         """Save instance to MongoDB"""
         try: 
@@ -68,9 +77,7 @@ class Product(BaseModel):
         except Exception as e:
             print(str(e))
             return {"error": str(e)}
-    
-    
-    
+        
 @dataclass 
 class Customer(BaseModel): 
     """Class for Customers"""
