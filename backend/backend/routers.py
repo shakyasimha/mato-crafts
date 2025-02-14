@@ -1,6 +1,6 @@
 ## Custom router for supabase
 
-class CustomRouter(object):
+class SupabaseRouter(object):
 
     def db_for_read(self, model, **hints):
         return getattr(model, "_DATABASE", "default")

@@ -100,7 +100,7 @@ DATABASES = {
     }
 }
 
-DATABASE_ROUTERS = ['backend.routers.CustomRouter']
+DATABASE_ROUTERS = ['backend.routers.SupabaseRouter']
 
 
 # Rest Framework settings here
