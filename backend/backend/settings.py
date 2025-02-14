@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+# Load environment variables
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -83,8 +88,20 @@ DATABASES = {
         "PASSWORD": "postgres",
         "HOST": "localhost",
         "PORT": "5433",
+    },
+    "supabase": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("supabase_dbname"),
+        "USER": os.getenv("supabase_user"),
+        "PASSWORD": os.getenv("supabase_password"),
+        "HOST": os.getenv("supabase_host"),
+        "PORT": os.getenv("supabase_port"),
+        "CERT": "backend.prod-ca-2021.crt" # SSL certificate, stored inside backend folder
     }
 }
+
+DATABASE_ROUTERS = ['backend.routers.CustomRouter']
+
 
 # Rest Framework settings here
 REST_FRAMEWORK = {
