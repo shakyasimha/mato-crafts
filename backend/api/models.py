@@ -23,6 +23,7 @@ class Customer(models.Model):
     name = models.CharField(max_length=255, null=False)
     phone = models.CharField(max_length=16, null=False)
     address = models.CharField(max_length=255)
+    
 class Employee(models.Model):
     name = models.CharField(max_length=255, null=False)
     address = models.CharField(max_length=255, null=False)
@@ -39,21 +40,13 @@ class Product(models.Model):
     price = models.FloatField()
     discount = models.IntegerField() 
     stock_remaining = models.IntegerField()
-    size = models.CharField(
-        max_length=1,
-        choices=[
-            ('S', 'Small'),
-            ('M', 'Medium'),
-            ('L', 'Large')
-        ]
-    )
+    size = models.CharField(max_length=1, choices=[('S', 'Small'),('M', 'Medium'),('L', 'Large')])
     images = ArrayField(models.URLField(max_length=255), blank=False, default=list)
     description = models.TextField() 
     materials = ArrayField(models.CharField(max_length=255), blank=True, default=list)
     weight = models.IntegerField()
     dimension = models.CharField(max_length=255)
-    type_of = models.CharField(max_length=16, choices=['Pair', 'Single', 'Bundle'])
-    # reviews = models.ForeignKey(Review, on_delete=models.SET_NULL, related_name='products')
+    type_of = models.CharField(max_length=16, choices=[('P','Pair'), ('S','Single'), ('B','Bundle')])
     categories = models.CharField(max_length=255)
     
 class ProductListing(models.Model):
@@ -65,7 +58,7 @@ class ProductListing(models.Model):
 class Review(models.Model):
     # customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='customer')
     description = models.TextField() 
-    rating = models.IntegerField(max_length=1, choices=[0, 1, 2, 3, 4, 5])
+    rating = models.IntegerField()
     images = ArrayField(models.URLField(max_length=255), blank=True, default=list)
 
 class Sales(models.Model):
@@ -74,26 +67,21 @@ class Sales(models.Model):
     verified = models.BooleanField()
 
 class Cart(models.Model):
-    paid = models.CharField(max_length=16, choices=['Paid', 'Failed', 'Pending'])
+    paid = models.CharField(max_length=16, choices=[('P','Paid'), ('F','Failed'), ('P','Pending')])
 
 
 ## Junction tables start here
 class ProductReviewJunction(models.Model):
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='products')
-    review_id = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='review')
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    review_id = models.ForeignKey(Review, on_delete=models.CASCADE)
     
 class ProductListingJunction(models.Model):
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='products')
-    product_listing_id = models.ForeignKey(ProductListing, on_delete=models.CASCADE, related_name='product-listing')
-
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product_listing_id = models.ForeignKey(ProductListing, on_delete=models.CASCADE)
 
 class CartJunction(models.Model):
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='products')
-    buyer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='buyer')
-    product_listing_id = models.ForeignKey(ProductListing, on_delete=models.CASCADE, related_name='products')
-    cart_id = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cart')
-
-class SalesCartJunction(models.Model):
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='products')
-    sales_id = models.ForeignKey(Sales, on_delete=models.CASCADE, related_name='sales')
-    cart_id = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cart')
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    buyer_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    product_listing_id = models.ForeignKey(ProductListing, on_delete=models.CASCADE)
+    cart_id = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    sales_id = models.ForeignKey(Sales, on_delete=models.CASCADE)
