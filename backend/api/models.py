@@ -50,13 +50,13 @@ class Product(models.Model):
     categories = models.CharField(max_length=255)
     
 class ProductListing(models.Model):
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='products')
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_listing', null=True)
     quantity = models.IntegerField() 
     listing_price = models.IntegerField() 
     coupon_discount = models.IntegerField()
 
 class Review(models.Model):
-    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='customer')
+    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='customer_review', null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews")
     description = models.TextField() 
     rating = models.IntegerField()
