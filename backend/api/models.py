@@ -50,13 +50,14 @@ class Product(models.Model):
     categories = models.CharField(max_length=255)
     
 class ProductListing(models.Model):
-    # product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='products')
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='products')
     quantity = models.IntegerField() 
     listing_price = models.IntegerField() 
     coupon_discount = models.IntegerField()
 
 class Review(models.Model):
-    # customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='customer')
+    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='customer')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews")
     description = models.TextField() 
     rating = models.IntegerField()
     images = ArrayField(models.URLField(max_length=255), blank=True, default=list)
@@ -71,13 +72,13 @@ class Cart(models.Model):
 
 
 ## Junction tables start here
-class ProductReviewJunction(models.Model):
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
-    review_id = models.ForeignKey(Review, on_delete=models.CASCADE)
+# class ProductReviewJunction(models.Model):
+#     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     review_id = models.ForeignKey(Review, on_delete=models.CASCADE)
     
-class ProductListingJunction(models.Model):
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
-    product_listing_id = models.ForeignKey(ProductListing, on_delete=models.CASCADE)
+# class ProductListingJunction(models.Model):
+#     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     product_listing_id = models.ForeignKey(ProductListing, on_delete=models.CASCADE)
 
 class CartJunction(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)

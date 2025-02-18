@@ -8,8 +8,6 @@ from .models import (
     Cart, 
     Customer, 
     Employee,
-    ProductListingJunction,
-    ProductReviewJunction, 
     CartJunction
 )
 
