@@ -17,17 +17,17 @@ from .models import (
 class ProductSerializer(ModelSerializer):
     class Meta:
         model = Product 
-        fields = "__all__"
+        fields = ['name', 'price', 'discount', 'stock_remaining', 'size', 'images', 'description', 'materials', 'weight', 'dimension', 'typeof', 'categories']
     
 class ProductListingSerializer(ModelSerializer):
     class Meta:
         model = ProductListing
-        fields = "__all__"
+        fields = ['product_id', 'review_id']
         
 class ReviewSerializer(ModelSerializer):
     class Meta:
         model = Review
-        fields = "__all__"
+        fields = ['description', 'rating', 'images']
 
 class SalesSerializer(ModelSerializer):
     class Meta:
