@@ -91,6 +91,54 @@ class ProductView(APIView):
         
 class ReviewFetchView(APIView):
     """
-    
+    API for fetching reviews
     """
-    
+    def get(self, request, product_id, format=None):
+        """Get request for receiving reviews of one product"""
+        try: 
+            reviews = Review.objects.get(product_id=product_id)
+            serializer = ReviewSerializer(reviews)
+            
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    def post(self, request, format=None):
+        """Post a new review on the site"""
+        try: 
+            serializer = ReviewSerializer(data=request.data)
+            
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+def ProductListingView(APIView):
+    """API View for Product Listing"""
+    def get(self, request, product_id, format=None):
+        """Get request for receiving product listings"""
+        try: 
+            product_listing = ProductListing.objects.get(product_id=product_id)
+            reviews = ProductListing.objects.get(product_id=product_id)
+            serializer = ProductListingSerializer(reviews)
+            
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    def post(self, request, format=None):
+        """Post a new review on the site"""
+        try: 
+            serializer = ReviewSerializer(data=request.data)
+            
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
