@@ -69,7 +69,10 @@ class Sales(models.Model):
 
 class Cart(models.Model):
     paid = models.CharField(max_length=16, choices=[('P','Paid'), ('F','Failed'), ('P','Pending')])
-
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)  # Direct link to Product
+    buyer = models.ForeignKey(Customer, on_delete=models.CASCADE)  # Direct link to Customer
+    product_listing = models.ForeignKey(ProductListing, on_delete=models.CASCADE)  # Direct link to ProductListing
+    sales = models.ForeignKey(Sales, on_delete=models.CASCADE)  # Direct link to Sales
 
 ## Junction tables start here
 # class ProductReviewJunction(models.Model):
@@ -80,9 +83,9 @@ class Cart(models.Model):
 #     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
 #     product_listing_id = models.ForeignKey(ProductListing, on_delete=models.CASCADE)
 
-class CartJunction(models.Model):
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
-    buyer_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    product_listing_id = models.ForeignKey(ProductListing, on_delete=models.CASCADE)
-    cart_id = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    sales_id = models.ForeignKey(Sales, on_delete=models.CASCADE)
+# class CartJunction(models.Model):
+#     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     buyer_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
+#     product_listing_id = models.ForeignKey(ProductListing, on_delete=models.CASCADE)
+#     cart_id = models.ForeignKey(Cart, on_delete=models.CASCADE)
+#     sales_id = models.ForeignKey(Sales, on_delete=models.CASCADE)
