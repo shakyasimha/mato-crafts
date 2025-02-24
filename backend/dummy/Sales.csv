@@ -1,0 +1,6 @@
+id,buyer_name,price,verified
+1,Buyer 1,366,False
+2,Buyer 2,17,True
+3,Buyer 3,437,False
+4,Buyer 4,496,True
+5,Buyer 5,379,False

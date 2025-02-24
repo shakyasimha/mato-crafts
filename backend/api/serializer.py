@@ -8,7 +8,6 @@ from .models import (
     Cart, 
     Customer, 
     Employee,
-    CartJunction
 )
 
 # Serializers go here

@@ -1,0 +1,6 @@
+id,name,price,discount,stock_remaining,size,images,description,materials,weight,dimension,type_of,categories
+1,Product 1,303.4948537161712,34,9,L,https://example.com/image1.jpg,Sample description,cotton,661,10x10x10,S,Category A
+2,Product 2,469.634296034597,47,72,L,https://example.com/image2.jpg,Sample description,cotton,154,10x10x10,S,Category A
+3,Product 3,444.7803186906442,46,30,M,https://example.com/image3.jpg,Sample description,cotton,820,10x10x10,S,Category A
+4,Product 4,158.44431148507712,18,67,L,https://example.com/image4.jpg,Sample description,cotton,366,10x10x10,P,Category A
+5,Product 5,192.13176141071054,8,44,S,https://example.com/image5.jpg,Sample description,cotton,726,10x10x10,S,Category A

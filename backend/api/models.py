@@ -41,7 +41,7 @@ class Product(models.Model):
     discount = models.IntegerField() 
     stock_remaining = models.IntegerField()
     size = models.CharField(max_length=1, choices=[('S', 'Small'),('M', 'Medium'),('L', 'Large')])
-    images = ArrayField(models.URLField(max_length=255), blank=False, default=list)
+    images = ArrayField(models.URLField(max_length=255), blank=True, default=list)
     description = models.TextField() 
     materials = ArrayField(models.CharField(max_length=255), blank=True, default=list)
     weight = models.IntegerField()

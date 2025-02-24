@@ -1,0 +1,6 @@
+id,product_id,quantity,listing_price,coupon_discount
+1,1,9,343,9
+2,2,31,246,2
+3,3,42,310,25
+4,4,16,86,7
+5,5,13,42,16

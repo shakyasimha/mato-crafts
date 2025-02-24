@@ -1,0 +1,6 @@
+id,customer_id,product_id,description,rating,images
+1,1,1,Great product!,5,https://example.com/review1.jpg
+2,2,2,Great product!,3,https://example.com/review2.jpg
+3,3,3,Great product!,5,https://example.com/review3.jpg
+4,4,4,Great product!,1,https://example.com/review4.jpg
+5,5,5,Great product!,3,https://example.com/review5.jpg

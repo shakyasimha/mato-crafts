@@ -1,0 +1,6 @@
+id,paid,product_id,buyer_id,product_listing_id,sales_id
+1,P,1,1,1,1
+2,F,2,2,2,2
+3,P,3,3,3,3
+4,P,4,4,4,4
+5,P,5,5,5,5
